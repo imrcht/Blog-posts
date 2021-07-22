@@ -109,8 +109,8 @@ app.get('*', function(req, res){
 
 
 
-app.listen( process.env.POST || 3000, ()  => {
-  if (!process.env.POST) {
+app.listen( process.env.PORT || 3000, ()  => {
+  if (!process.env.PORT) {
     console.log("Server started on port 3000");
   }
 });
