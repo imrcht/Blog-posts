@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+const sec = require(__dirname+"/security.js");
 
 const homeStartingContent = "Hello guys, this is Rachit gupta. Welcome to my blog site. Here you can Post your thoughts and we will publish in this site. This is the home page , here you can see some points of different posts and when you click on read more it will redirect you to that post page. We have 5 options in the navigation bar. Through Compose you can create a new post. Through All posts you can see all the posts that has been posted in our blog.";
 const aboutContent = "Hey guys, it's Rachit again. This is about us section of our site.";
@@ -12,8 +13,9 @@ const contactContent = "You are in the Contact page of our site. If you are faci
 
 
 const app = express();
+const conf = sec.getSecurity();
 
-mongoose.connect("mongodb://localhost:27017/blogpostDB", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(`mongodb+srv://${conf.user}:${conf.pwd}@cluster0.vhg7m.mongodb.net/blogpostDB`, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -107,6 +109,8 @@ app.get('*', function(req, res){
 
 
 
-app.listen(3000, ()  => {
-  console.log("Server started on port 3000");
+app.listen( process.env.POST || 3000, ()  => {
+  if (!process.env.POST) {
+    console.log("Server started on port 3000");
+  }
 });
