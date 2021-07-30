@@ -168,6 +168,11 @@ app.get("/posts/:postName", (req, res) => {
   })
 })
 
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/");
+});
+
 app.post("/login", (req, res) => {
   const user = new User({
     username: req.body.username,
