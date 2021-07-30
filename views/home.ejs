@@ -2,7 +2,7 @@
 <h1>Home</h1>
 <p ><%= hcontent%></p>
 <% newpost.forEach((post)=> { %>
-    <h1><%= post.title %> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <%= post.user.email%></span></h1>
+    <h1><%= post.title %></h1>
     <p class="limit"><%= post.content %> </p>
     <a href="/posts/<%= post._id %>" >Read More</a>
 <% }) %>

@@ -90,14 +90,26 @@ const Post = mongoose.model("Post", postSchema);
 
 
 app.get("/", (req, res) => {
-  Post.find({}, (err, posts) => {
-    if (!err) {
-      res.render("home", {
-        hcontent: homeStartingContent,
-        newpost: posts,
-      });
-    }
-  })
+  if (req.isAuthenticated()){
+    Post.find({}, (err, posts) => {
+      if (!err) {
+        res.render("userpage", {
+          userfname: req.user.name,
+          hcontent: homeStartingContent,
+          newpost: posts,
+        });
+      }
+    })
+  } else {
+    Post.find({}, (err, posts) => {
+      if (!err) {
+        res.render("home", {
+          hcontent: homeStartingContent,
+          newpost: posts,
+        });
+      }
+    })
+  }
 })
 
 app.get("/about", (req, res) => {
@@ -149,6 +161,7 @@ app.get("/posts/:postName", (req, res) => {
         res.render("post", {
           ptitle: post.title,
           pcontent: post.content,
+          pauthor: post.user.name
         });
       }
     })
@@ -166,7 +179,7 @@ app.post("/login", (req, res) => {
       console.log(err);
     } else {
       passport.authenticate("local", { failureRedirect: "/login" })(req, res, function(){
-        res.redirect("/compose");
+        res.redirect("/");
       });
     }
   });
@@ -179,7 +192,7 @@ app.post("/register", (req, res) => {
       res.redirect("/register");
     } else {
       passport.authenticate("local")(req, res, function(){
-        res.redirect("/compose");
+        res.redirect("/");
       });
     }
   });
@@ -187,6 +200,7 @@ app.post("/register", (req, res) => {
 
 app.post("/compose", (req, res) => {
   newuser = User({
+    name: req.user.name,
     email: req.user.username,
   })
   const postitem = new Post({
