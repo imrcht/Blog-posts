@@ -20,8 +20,7 @@
           <li id="home"><a href="/">HOME</a></li>
           <li id="about"><a href="/about">ABOUT US</a></li>
           <li id="contact"><a href="/contact">CONTACT US</a></li>
-          <li id="contact"><a href="/login">LOGIN</a></li>
-          <li id="contact"><a href="/register">REGISTER</a></li>
+          <li id="contact"><a href="/compose">COMPOSE</a></li>
           <li id="contact"><a href="/posts">ALL POSTS</a></li>
         </ul>
     </div>
@@ -29,3 +28,21 @@
 
   <body>
     <div class="container">
+        <h1>Home</h1>
+        <p ><%= hcontent%></p>
+        <% newpost.forEach((post)=> { %>
+            <h1><%= post.title %> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <%= post.user.email%></span></h1>
+            <p class="limit"><%= post.content %> </p>
+            <a href="/posts/<%= post._id %>" >Read More</a>
+        <% }) %>
+    </div>
+    <div class="footer-padding"></div>
+        <div class="footer">
+            <p>Made with ❤️ by The Rachit Gupta</p>
+        </div>
+    </div>
+  </body>
+</html>
+
+        
+        
