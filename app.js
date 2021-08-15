@@ -11,13 +11,14 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
+const { truncate } = require("lodash");
 
 
 const homeStartingContent = "Hello guys, this is Rachit gupta. Welcome to my blog site. Here you can Post your thoughts and we will publish in this site. This is the home page , here you can see some points of different posts and when you click on read more it will redirect you to that post page. We have 5 options in the navigation bar. Through Compose you can create a new post. Through All posts you can see all the posts that has been posted in our blog.";
 const aboutContent = "Hey guys, it's Rachit again. This is about us section of our site.";
 const contactContent = "You are in the Contact page of our site. If you are facing any difficulty or want to give some suggestion on upgrading the site you can directly connect me on LinkedIN. ";
 
-
+var valid = true;
 
 const app = express();
 const conf = sec.getSecurity();
@@ -133,7 +134,15 @@ app.get("/compose", (req, res) => {
 })
 
 app.get("/login", (req, res) => {
-  res.render("login")
+  if (valid){
+    res.render("login",{
+      credentials: ""
+    })
+  } else {
+    res.render("login",{
+      credentials: "Invalid Id or password"
+    })
+  }
 })
 
 app.get("/register", (req, res) => {
@@ -180,10 +189,12 @@ app.post("/login", (req, res) => {
   });
 
   req.login(user, function(err){
+    valid = false;
     if (err) {
       console.log(err);
     } else {
       passport.authenticate("local", { failureRedirect: "/login" })(req, res, function(){
+        valid = true;
         res.redirect("/");
       });
     }
