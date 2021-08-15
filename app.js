@@ -347,7 +347,7 @@ app.post("/otp", (req, res) =>{
         res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, function(){
-           res.redirect("/")
+          res.redirect("/")
         });
       }
     });

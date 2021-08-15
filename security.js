@@ -11,4 +11,5 @@ exports.getSecret = () =>{
         email: "rachitgupta.5036459@gmail.com",
         password: "rachoof7",
     }
+    return auth;
 }
