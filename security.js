@@ -9,7 +9,7 @@ exports.getSecurity = () => {
 exports.getSecret = () =>{
     auth = {
         email: "rachitgupta.5036459@gmail.com",
-        password: "rachit77",
+        password: "rachitnaam77",
     }
     return auth;
 }
