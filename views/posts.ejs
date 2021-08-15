@@ -1,4 +1,4 @@
-<%- include("partials/header") -%>
+<%- include("partials/loginheader") -%>
 <h1>All Posts</h1>
 <% newpost.forEach((post)=> { %>
     <h2><li><a href="/posts/<%= post._id %>" ><%= post.title %></a><span style="text-align: right; float: right;">- <%= post.user.name%></span></li></h2>

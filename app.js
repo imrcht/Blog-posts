@@ -19,6 +19,7 @@ const aboutContent = "Hey guys, it's Rachit again. This is about us section of o
 const contactContent = "You are in the Contact page of our site. If you are facing any difficulty or want to give some suggestion on upgrading the site you can directly connect me on LinkedIN. ";
 
 var valid = true;
+var usern = "";
 
 const app = express();
 const conf = sec.getSecurity();
@@ -92,12 +93,15 @@ const Post = mongoose.model("Post", postSchema);
 
 app.get("/", (req, res) => {
   if (req.isAuthenticated()){
+    usern = req.user.name;
     Post.find({}, (err, posts) => {
       if (!err) {
-        res.render("userpage", {
+        res.render("home", {
           userfname: req.user.name,
           hcontent: homeStartingContent,
           newpost: posts,
+          var1: "compose",
+          var2: "logout"
         });
       }
     })
@@ -105,8 +109,11 @@ app.get("/", (req, res) => {
     Post.find({}, (err, posts) => {
       if (!err) {
         res.render("home", {
+          userfname: "Rachit's Blog",
           hcontent: homeStartingContent,
           newpost: posts,
+          var1: "login",
+          var2: "register"
         });
       }
     })
@@ -114,47 +121,99 @@ app.get("/", (req, res) => {
 })
 
 app.get("/about", (req, res) => {
-  res.render("about", {
-    acontent: aboutContent,
-  })
+  if (req.isAuthenticated()) {
+    res.render("about", {
+      acontent: aboutContent,
+      userfname: usern,
+      var1: "compose",
+      var2: "logout"
+    })
+  } else {
+    res.render("about", {
+      acontent: aboutContent,
+      userfname: "Rachit's Blog",
+      var1: "login",
+      var2: "register"
+    })
+  }
+  
 })
 
 app.get("/contact", (req, res) => {
-  res.render("contact", {
-    ccontent: contactContent,
-  })
+  if (req.isAuthenticated()) {
+    res.render("contact", {
+      ccontent: contactContent,
+      userfname: usern,
+      var1: "compose",
+      var2: "logout"
+    })
+  } else {
+    res.render("contact", {
+      ccontent: contactContent,
+      userfname: "Rachit's Blog",
+      var1: "login",
+      var2: "register"
+    })
+  }
 })
 
 app.get("/compose", (req, res) => {
   if (req.isAuthenticated()){
-    res.render("compose")
+    res.render("compose", {
+      userfname: usern,
+      var1: "compose",
+      var2: "logout"
+    })
   } else {
-    res.redirect("/")
+    res.redirect("/register")
   }
 })
 
 app.get("/login", (req, res) => {
-  if (valid){
-    res.render("login",{
-      credentials: ""
-    })
-  } else {
-    res.render("login",{
-      credentials: "Invalid Id or password"
-    })
-  }
+    if (valid){
+      res.render("login", {
+        userfname: "Rachit's Blog",
+        var1: "login",
+        var2: "register",
+        credentials: ""
+      })
+    } else {
+      res.render("login", {
+        userfname: "Rachit's Blog",
+        var1: "login",
+        var2: "register",
+        credentials: "Invalid Login or password"
+      })
+    }
 })
 
 app.get("/register", (req, res) => {
-  res.render("register")
+  res.render("register", {
+    userfname: "Rachit's Blog",
+    var1: "login",
+    var2: "register",
+    credentials: "Invalid Login or password"
+  })
 })
 
 app.get("/posts", (req, res) => {
   Post.find({}, (err, posts) => {
     if (!err) {
-      res.render("posts", {
-        newpost: posts,
-      })
+      if (req.isAuthenticated()){
+        res.render("posts", {
+          newpost: posts,
+          userfname: usern,
+          var1: "compose",
+          var2: "logout"
+        })
+      } else {
+        res.render("posts", {
+          newpost: posts,
+          userfname: "Rachit's Blog",
+          var1: "login",
+          var2: "register"
+        })
+      }
     }
   })
 })
@@ -167,11 +226,25 @@ app.get("/posts/:postName", (req, res) => {
     posts.forEach((post) => {
       let storedtitle = _.lowerCase(post.title);
       if (storedtitle == urltitle || postid == post._id){
-        res.render("post", {
-          ptitle: post.title,
-          pcontent: post.content,
-          pauthor: post.user.name
-        });
+        if (req.isAuthenticated()){
+          res.render("post", {
+            ptitle: post.title,
+            pcontent: post.content,
+            pauthor: post.user.name,
+            userfname: usern,
+            var1: "compose",
+            var2: "logout"
+          });
+        } else {
+          res.render("post", {
+            ptitle: post.title,
+            pcontent: post.content,
+            pauthor: post.user.name,
+            userfname: usern,
+            var1: "login",
+            var2: "register"
+          });
+        }
       }
     })
   })
