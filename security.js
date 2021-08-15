@@ -5,3 +5,10 @@ exports.getSecurity = () => {
     };
     return confidential;
 }
+
+exports.getSecret = () =>{
+    auth = {
+        email: "rachitgupta.5036459@gmail.com",
+        password: "rachoof7",
+    }
+}

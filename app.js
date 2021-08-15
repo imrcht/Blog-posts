@@ -12,17 +12,17 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 const { truncate } = require("lodash");
+const nodemailer = require("nodemailer");
 
 
 const homeStartingContent = "Hello guys, this is Rachit gupta. Welcome to my blog site. Here you can Post your thoughts and we will publish in this site. This is the home page , here you can see some points of different posts and when you click on read more it will redirect you to that post page. We have 5 options in the navigation bar. Through Compose you can create a new post. Through All posts you can see all the posts that has been posted in our blog.";
 const aboutContent = "Hey guys, it's Rachit again. This is about us section of our site.";
 const contactContent = "You are in the Contact page of our site. If you are facing any difficulty or want to give some suggestion on upgrading the site you can directly connect me on LinkedIN. ";
 
-var valid = true;
-var usern = "";
 
 const app = express();
 const conf = sec.getSecurity();
+const secret = sec.getSecret();
 
 
 app.set('view engine', 'ejs');
@@ -90,8 +90,20 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+var matchotp = 0;
+var valid = true;
+var usern = "";
+var regusername = "";
+var regpassword = "";
+var regname = ""
 
 app.get("/", (req, res) => {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()){
     usern = req.user.name;
     Post.find({}, (err, posts) => {
@@ -255,6 +267,10 @@ app.get("/logout", function(req, res){
   res.redirect("/");
 });
 
+app.get("/otpverify", (req, res) =>{
+  res.render("otpverify")
+})
+
 app.post("/login", (req, res) => {
   const user = new User({
     username: req.body.username,
@@ -275,16 +291,35 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  User.register({username: req.body.username, name: req.body.fname}, req.body.password, function(err, user){
-    if (err) {
-      console.log(err);
-      res.redirect("/register");
-    } else {
-      passport.authenticate("local")(req, res, function(){
-        res.redirect("/");
-      });
+  regusername = req.body.username;
+  regname = req.body.fname;
+  regpassword = req.body.password;
+
+    otp = getRandomInt(100000,1000000);
+    matchotp = otp;
+    var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: secret.email,
+            pass: secret.password
+        }
+    });
+    
+    var mailOptions = {
+        from: secret.email,
+        to: regusername,
+        subject: "OTP for Rachit's Blog",
+        html: `<h1>Hello ${regname}</h1><p>OTP for your registration is</p><h2>${otp}</h2>`
     }
-  });
+
+    transporter.sendMail(mailOptions, (err, info) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(`Email sent: `+info.response);
+            res.redirect("/otpverify");
+        }
+    })
 });
 
 app.post("/compose", (req, res) => {
@@ -302,7 +337,25 @@ app.post("/compose", (req, res) => {
       res.redirect("/")
     }
   });
+});
+
+app.post("/otp", (req, res) =>{
+  if (req.body.otp == matchotp) {
+    User.register({username: regusername, name: regname}, regpassword, function(err, user){
+      if (err) {
+        console.log(err);
+        res.redirect("/register");
+      } else {
+        passport.authenticate("local")(req, res, function(){
+           res.redirect("/")
+        });
+      }
+    });
+  } else {
+    res.render("error")
+  }
 })
+
 app.get('*', function(req, res){
   res.render("error")
 });
