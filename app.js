@@ -346,10 +346,8 @@ app.post("/otp", (req, res) =>{
         console.log(err);
         res.redirect("/register");
       } else {
-        console.log("Inside else");
         passport.authenticate("local", function(){
-          console.log("redirect to /");
-          res.redirect("/")
+          res.redirect("/login")
         })(req, res)
       }
     });
