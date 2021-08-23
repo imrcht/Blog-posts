@@ -80,7 +80,7 @@ passport.deserializeUser(function(id, done) {
 // ));
 const commentSchema = new mongoose.Schema({
   name: String,
-  comment: Array
+  comment: String
 })
 
 const Comment = mongoose.model("Comment", commentSchema);
@@ -367,24 +367,34 @@ app.post("/otp", (req, res) =>{
   }
 })
 
-app.post("/post/comment", (req, res) =>{
+app.post("/post/comment", async function (req, res) {
   console.log(req.body.pid);
   const comment = new Comment({
     name: usern,
     comment: req.body.ucomment
   });
-  Post.update({_id: req.body.pid}, {$set: {
-    comments: function (){
-      console.log("cin");
-      allcomments=[]
-      Post.findOne({_id: req.body.pid}, (err, post) =>{
-        allcomments.push(post.comments)
-        console.log(allcomments);
-      })
-      return allcomments;
-    }
-  }})
-  // comment.save()
+  allcomments=[comment]
+  await Post.findById({_id: req.body.pid}, function (err, post) {
+    post.comments.forEach((item)=>{
+      allcomments.push(item)
+    })
+    // console.log(`Inside find ${allcomments}`);
+  })
+  await Post.updateOne(
+    {_id: req.body.pid}, 
+    {$set: {
+    comments: allcomments
+      }
+    },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(`updated ${allcomments}`);
+      }
+    })
+    // console.log(`after update ${allcomments}`);
+  comment.save()
   res.redirect("/posts/"+req.body.pid)
 })
 

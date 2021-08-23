@@ -1,15 +1,15 @@
 exports.getSecurity = () => {
     confidential = {
-        user:"akdfjmsn",
-        pwd: "ajd,bcna ",
+        user:"rfgewgt",
+        pwd: "fadagdfg",
     };
     return confidential;
 }
 
 exports.getSecret = () =>{
     auth = {
-        email: "sdhfajncj.jabcma@gmail.com",
-        password: "kjfandjklvanlcija",
+        email: "kjadsfnk.kjadsf@gmail.com",
+        password: "ajkdsfkjas",
     }
     return auth;
 }
