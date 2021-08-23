@@ -374,12 +374,13 @@ app.post("/post/comment", async function (req, res) {
     comment: req.body.ucomment
   });
   allcomments=[comment]
-  await Post.findOne({_id: req.body.pid},  function (err, post) {
-    console.log(post.comments);
-    allcomments.push(post.comments[0])
+  await Post.findById({_id: req.body.pid},  function (err, post) {
+    post.comments.forEach((item)=>{
+      allcomments.push(item)
+    })
+    console.log(`Inside find ${allcomments}`);
   })
-  console.log("after find");
-  console.log(allcomments);
+  console.log(`after find ${allcomments}`);
   Post.updateOne(
     {_id: req.body.pid}, 
     {$set: {
