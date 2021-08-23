@@ -1,6 +1,25 @@
 <%- include("partials/loginheader") -%>
 
 <h1><%= ptitle %></h1>
-<p><%= pcontent %><div style="text-align: right;"> <br><br><br>  <h3>- <%= pauthor%></h3></div></p>
+<p><%= pcontent %><div style="text-align: right;"> <h3>- <%= pauthor%></h3></div></p>
+<div class="container">
+    <div class="dialogbox">
+      <div class="body">
+        <span class="tip tip-up"></span>
+        <% pcomments.forEach((pcomment)=>{ %>
+        <div class="message">
+            <div></div>
+            <span><%= pcomment.comment %></span>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+</div>
+<form action="/post/comment" method="POST">
+    <div class="form-group">
+        <textarea class="comment" name="ucomment" placeholder="Type Your Comment here"></textarea>
+    </div>
+    <button type="submit" class="btn btn-twitter" name="pid" value="<%= pid%>">Post</button>
+</form>
 
 <%- include("partials/footer") -%>

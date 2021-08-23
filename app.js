@@ -78,6 +78,12 @@ passport.deserializeUser(function(id, done) {
 //     });
 //   }
 // ));
+const commentSchema = new mongoose.Schema({
+  name: String,
+  comment: Array
+})
+
+const Comment = mongoose.model("Comment", commentSchema);
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -85,10 +91,12 @@ const postSchema = new mongoose.Schema({
     required: [true, "Title is needed for the post"],
   },
   content: String,
-  user: userSchema
+  user: userSchema,
+  comments: Array
 })
 
 const Post = mongoose.model("Post", postSchema);
+
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -103,13 +111,12 @@ var regpassword = "";
 var regname = ""
 
 app.get("/", (req, res) => {
-  console.log(req.isAuthenticated());
   if (req.isAuthenticated()){
     usern = req.user.name;
     Post.find({}, (err, posts) => {
       if (!err) {
         res.render("home", {
-          userfname: req.user.name,
+          userfname: "| "+req.user.name,
           hcontent: homeStartingContent,
           newpost: posts,
           var1: "compose",
@@ -121,7 +128,7 @@ app.get("/", (req, res) => {
     Post.find({}, (err, posts) => {
       if (!err) {
         res.render("home", {
-          userfname: "Rachit's Blog",
+          userfname: "",
           hcontent: homeStartingContent,
           newpost: posts,
           var1: "login",
@@ -136,14 +143,14 @@ app.get("/about", (req, res) => {
   if (req.isAuthenticated()) {
     res.render("about", {
       acontent: aboutContent,
-      userfname: usern,
+      userfname: "| "+usern,
       var1: "compose",
       var2: "logout"
     })
   } else {
     res.render("about", {
       acontent: aboutContent,
-      userfname: "Rachit's Blog",
+      userfname: "",
       var1: "login",
       var2: "register"
     })
@@ -155,14 +162,14 @@ app.get("/contact", (req, res) => {
   if (req.isAuthenticated()) {
     res.render("contact", {
       ccontent: contactContent,
-      userfname: usern,
+      userfname: "| "+usern,
       var1: "compose",
       var2: "logout"
     })
   } else {
     res.render("contact", {
       ccontent: contactContent,
-      userfname: "Rachit's Blog",
+      userfname: "",
       var1: "login",
       var2: "register"
     })
@@ -172,7 +179,7 @@ app.get("/contact", (req, res) => {
 app.get("/compose", (req, res) => {
   if (req.isAuthenticated()){
     res.render("compose", {
-      userfname: usern,
+      userfname: "| "+usern,
       var1: "compose",
       var2: "logout"
     })
@@ -184,14 +191,14 @@ app.get("/compose", (req, res) => {
 app.get("/login", (req, res) => {
     if (valid){
       res.render("login", {
-        userfname: "Rachit's Blog",
+        userfname: "",
         var1: "login",
         var2: "register",
         credentials: ""
       })
     } else {
       res.render("login", {
-        userfname: "Rachit's Blog",
+        userfname: "",
         var1: "login",
         var2: "register",
         credentials: "Invalid Login or password"
@@ -201,7 +208,7 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("register", {
-    userfname: "Rachit's Blog",
+    userfname: "",
     var1: "login",
     var2: "register",
     credentials: "Invalid Login or password"
@@ -214,14 +221,14 @@ app.get("/posts", (req, res) => {
       if (req.isAuthenticated()){
         res.render("posts", {
           newpost: posts,
-          userfname: usern,
+          userfname: "| "+usern,
           var1: "compose",
           var2: "logout"
         })
       } else {
         res.render("posts", {
           newpost: posts,
-          userfname: "Rachit's Blog",
+          userfname: "",
           var1: "login",
           var2: "register"
         })
@@ -240,21 +247,25 @@ app.get("/posts/:postName", (req, res) => {
       if (storedtitle == urltitle || postid == post._id){
         if (req.isAuthenticated()){
           res.render("post", {
+            pid: post._id,
             ptitle: post.title,
             pcontent: post.content,
             pauthor: post.user.name,
-            userfname: usern,
+            userfname: "| "+usern,
             var1: "compose",
-            var2: "logout"
+            var2: "logout",
+            pcomments: post.comments
           });
         } else {
           res.render("post", {
+            pid: post._id,
             ptitle: post.title,
             pcontent: post.content,
             pauthor: post.user.name,
-            userfname: usern,
+            userfname: "",
             var1: "login",
-            var2: "register"
+            var2: "register",
+            pcomments: post.comments
           });
         }
       }
@@ -354,6 +365,27 @@ app.post("/otp", (req, res) =>{
   } else {
     res.render("error")
   }
+})
+
+app.post("/post/comment", (req, res) =>{
+  console.log(req.body.pid);
+  const comment = new Comment({
+    name: usern,
+    comment: req.body.ucomment
+  });
+  Post.update({_id: req.body.pid}, {$set: {
+    comments: function (){
+      console.log("cin");
+      allcomments=[]
+      Post.findOne({_id: req.body.pid}, (err, post) =>{
+        allcomments.push(post.comments)
+        console.log(allcomments);
+      })
+      return allcomments;
+    }
+  }})
+  // comment.save()
+  res.redirect("/posts/"+req.body.pid)
 })
 
 app.get('*', function(req, res){
