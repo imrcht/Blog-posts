@@ -89,3 +89,9 @@ html {
     line-height: 1.5;
     color: #797979;
   }
+  .brand_logo {
+    height: 50;
+    width: 50;
+    filter: brightness(0) ;
+    color: #dd2476;
+  }
