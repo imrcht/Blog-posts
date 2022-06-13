@@ -8,7 +8,7 @@ html {
     padding-bottom: 7rem;
 }
 .limit {
-    width: 40rem;
+    width: 38rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
