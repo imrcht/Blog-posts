@@ -1,4 +1,4 @@
 node_modules
-.DS_Store
 security.js
+.DS_Store
 .env

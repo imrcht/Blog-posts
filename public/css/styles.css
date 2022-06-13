@@ -1,33 +1,34 @@
 html {
     min-height: 100%;
     position: relative;
+    font-size: 62.5%;
 }
 .container-fluid {
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
 }
 .limit {
-    width: 700px;
+    width: 40rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 .navbar {
     font-weight: bolder;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
     border: 0;
     border-radius: 0;
     margin-bottom: 0;
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 1.2rem;
+    letter-spacing: .5rem;
 }
 .navbar-nav  li a:hover {
     color: #1abc9c !important;
 }
 
 .footer-padding {
-	padding-bottom: 60px;
+	padding-bottom: 6rem;
 }
 
 .footer {
@@ -35,35 +36,35 @@ html {
 	text-align: center;
 	bottom: 0;
 	width: 100%;
-	height: 60px;
+	height: 6rem;
 	background-color: #1abc9c;
 }
 
 .footer p {
-	margin-top: 25px;
-	font-size: 12px;
+	margin-top: 2.5rem;
+	font-size: 1.2rem;
   color: #fff;
 }
 .comment {
   width: 100%;
-  height: 50px;
-  padding: 10px;
-  border: 3px dashed #8ebf42;
+  height: 5rem;
+  padding: 1rem;
+  border: .3rem dashed #8ebf42;
   background-color: #d0e2bc;
   font: 1.4em/1.6em cursive;
   color: #095484;
 }
 .tip {
-    width: 0px;
-    height: 0px;
+    width: 0rem;
+    height: 0rem;
     position: absolute;
     background: transparent;
-    border: 10px solid #ccc;
+    border: 16rem solid #ccc;
   }
   
   .tip-up {
-    top: -25px; /* Same as body margin top + border */
-    /* left: 10px; */
+    top: -40rem; /* Same as body margin top + border */
+    /* left: 10rem; */
     border-right-color: transparent;
     border-left-color: transparent;
     border-top-color: transparent;
@@ -73,19 +74,19 @@ html {
     position: relative;
     width: 100%;
     height: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 5px;
+    margin-top: 16rem;
+    margin-bottom: 16rem;
+    padding: 8rem;
     background-color: #DADADA;
-    border-radius: 3px;
-    border: 5px solid #ccc;
+    border-radius: 4.8rem;
+    border: 8rem solid #ccc;
   }
   
   .body .message {
-    min-height: 30px;
-    border-radius: 3px;
+    min-height: 4.8rem;
+    border-radius: 4.8rem;
     font-family: Arial;
-    font-size: 14px;
+    font-size: 22.4rem;
     line-height: 1.5;
     color: #797979;
   }
