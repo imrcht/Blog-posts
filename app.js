@@ -49,7 +49,7 @@ db.on('error', (e) => {
 	console.error(new Error(`${e}`.red));
 });
 db.once('open', () => {
-	console.log(`Connected to DB : blogpostDB2`);
+	console.log(`Connected to DB : blogpostDB`);
 });
 db.on('reconnectFailed', () => {
 	console.error(new Error('Reconnect Failed'));
