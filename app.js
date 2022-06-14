@@ -14,9 +14,9 @@ const nodemailer = require('nodemailer');
 require('dotenv').config()
 
 const homeStartingContent =
-	'Hello guys, Welcome to my blog site. Here you can Post your thoughts and we will publish in this site. This is the home page , here you can see some points of different posts and when you click on read more it will redirect you to that post page. We have 5 options in the navigation bar. Through Compose you can create a new post. Through All posts you can see all the posts that has been posted in our blog.';
+	'Hello guys, Welcome to my blog site. Here you can Post your thoughts and we will publish in this site. This is the home page , here you can see some points of different posts and when you click on read more it will redirect you to that post page. We have 5 options in the navigation bar. Through Compose you can create a new post. Compose option will only be visible when you are logged in.Through All posts you can see all the posts that has been posted in our blog.';
 // const homeStartingContent = "Special Home Content for today in this site. Specialy designed for RED STOLE. For today i.e. 24th June, this blog website is turned to BirthDay site. More details/surprises in Particular post about Shreya"
-const aboutContent = 'Hey guys,This is about us section of our site.';
+const aboutContent = 'Hello, This website is one of the part of FIERCHT creations. fiercht is my insta handle. you can connect me on there also. Also some more project by FIERCHT creations are listed below: ';
 const contactContent =
 	'You are in the Contact page of our site. If you are facing any difficulty or want to give some suggestion on upgrading the site you can directly connect me on LinkedIN. ';
 
